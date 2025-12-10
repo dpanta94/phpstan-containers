@@ -1,0 +1,9 @@
+*             text
+.*            export-ignore
+composer.lock text -diff
+phpunit.*     export-ignore
+tests         export-ignore
+codeception.* export-ignore
+phpcs.xml     export-ignore
+docs          export-ignore
+CLAUDE.md     export-ignore

@@ -1,0 +1,9 @@
+services:
+    -
+        class: DPanta\PHPStan\Containers\StellarWpContainerDynamicReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
+    -
+        class: DPanta\PHPStan\Containers\PsrContainerDynamicReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
