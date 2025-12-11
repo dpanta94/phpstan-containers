@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Abstract PHPStan extension for Container type resolution.
  *
@@ -23,33 +24,34 @@ use PHPStan\Type\Type;
  * This class provides shared logic for resolving Container::get(Foo::class) to return type Foo.
  * Subclasses only need to implement getClass() to specify which container interface they support.
  */
-abstract class AbstractContainerDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension {
+abstract class AbstractContainerDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
+{
+    /**
+     * Check if this extension handles the given method.
+     *
+     * @param MethodReflection $methodReflection The method reflection.
+     *
+     * @return bool
+     */
+    public function isMethodSupported(MethodReflection $methodReflection): bool
+    {
+        return $methodReflection->getName() === 'get';
+    }
 
-	/**
-	 * Check if this extension handles the given method.
-	 *
-	 * @param MethodReflection $methodReflection The method reflection.
-	 *
-	 * @return bool
-	 */
-	public function isMethodSupported( MethodReflection $methodReflection ): bool {
-		return $methodReflection->getName() === 'get';
-	}
-
-	/**
-	 * Get the return type for the method call.
-	 *
-	 * If the first argument is a class-string constant (e.g., Foo::class),
-	 * this returns an ObjectType for that class. Otherwise, returns null
-	 * to fall back to PHPStan's default behavior.
-	 *
-	 * @param MethodReflection $methodReflection The method reflection.
-	 * @param MethodCall       $methodCall       The method call node.
-	 * @param Scope            $scope            The analysis scope.
-	 *
-	 * @return Type
-	 */
-	public function getTypeFromMethodCall(
+    /**
+     * Get the return type for the method call.
+     *
+     * If the first argument is a class-string constant (e.g., Foo::class),
+     * this returns an ObjectType for that class. Otherwise, returns null
+     * to fall back to PHPStan's default behavior.
+     *
+     * @param MethodReflection $methodReflection The method reflection.
+     * @param MethodCall       $methodCall       The method call node.
+     * @param Scope            $scope            The analysis scope.
+     *
+     * @return Type
+     */
+    public function getTypeFromMethodCall(
         MethodReflection $methodReflection,
         MethodCall $methodCall,
         Scope $scope
@@ -68,14 +70,14 @@ abstract class AbstractContainerDynamicReturnTypeExtension implements DynamicMet
             return ParametersAcceptorSelector::selectFromArgs($scope, $methodCall->getArgs(), $methodReflection->getVariants())->getReturnType();
         }
 
-		if (!method_exists($argType, 'getValue')) {
-			return ParametersAcceptorSelector::selectFromArgs($scope, $methodCall->getArgs(), $methodReflection->getVariants())->getReturnType();
-		}
+        if (!method_exists($argType, 'getValue')) {
+            return ParametersAcceptorSelector::selectFromArgs($scope, $methodCall->getArgs(), $methodReflection->getVariants())->getReturnType();
+        }
 
-		$value = $argType->getValue();
-		if (!is_string($value)) {
-			return ParametersAcceptorSelector::selectFromArgs($scope, $methodCall->getArgs(), $methodReflection->getVariants())->getReturnType();
-		}
+        $value = $argType->getValue();
+        if (!is_string($value)) {
+            return ParametersAcceptorSelector::selectFromArgs($scope, $methodCall->getArgs(), $methodReflection->getVariants())->getReturnType();
+        }
 
         return new ObjectType($value);
     }
