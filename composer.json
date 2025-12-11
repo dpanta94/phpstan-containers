@@ -1,0 +1,53 @@
+{
+    "name": "dpanta94/phpstan-containers",
+    "description": "PHPStan extensions for Containers",
+    "license": "MIT",
+    "type": "phpstan-extension",
+    "keywords": [
+        "static analysis",
+        "code analysis",
+        "code analyze",
+        "container",
+        "dependency injection",
+        "phpstan",
+        "psr-11"
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "phpstan/phpstan": "^2.0"
+    },
+    "require-dev": {
+        "php-parallel-lint/php-parallel-lint": "^1.1",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "phpunit/phpunit": "^9.5 || ^10.0",
+        "psr/container": "^1.0 || ^2.0",
+        "stellarwp/container-contract": "^1.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "DPanta\\PHPStan\\Containers\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DPanta\\PHPStan\\Containers\\Tests\\": "tests/",
+            "DPanta\\PHPStan\\Containers\\Tests\\Data\\": "tests/data/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "phpstan": {
+            "includes": [
+                "extension.neon"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:phpstan": "phpstan analyze"
+    }
+}

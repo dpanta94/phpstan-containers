@@ -1,0 +1,31 @@
+name: fix code styling
+
+on:
+    pull_request:
+    push:
+      branches:
+        - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2, laravel/pint
+          extensions: json, dom, curl, libxml, mbstring
+          coverage: none
+
+      - name: Run Pint
+        run: pint
+
+      - name: Commit linted files
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: 'chore: fix code styling'

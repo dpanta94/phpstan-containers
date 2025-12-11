@@ -1,0 +1,21 @@
+composer.lock
+vendor/
+tests/_support/_generated
+
+# Dev tools
+.buildpath
+*.iml
+.project
+.idea/
+.vscode/
+
+# Tests
+.phpunit.cache
+
+.DS_Store
+DOCKER_ENV
+Dockerfile-*
+output.log
+docker_tag
+
+CLAUDE.md
