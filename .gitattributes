@@ -4,3 +4,4 @@ composer.lock text -diff
 phpunit.*     export-ignore
 tests         export-ignore
 phpunit.xml   export-ignore
+pint.json     export-ignore
