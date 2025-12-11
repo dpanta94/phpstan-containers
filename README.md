@@ -54,15 +54,16 @@ class MyService {
 ```
 
 The extension resolves types when:
+
 - The argument to `get()` is a class-string constant (e.g., `Foo::class`)
 - The class or interface exists in the codebase
 
 When using string service IDs (e.g., `$container->get('mailer')`), the extension falls back to the default `mixed` return type.
 
-## How It Works
-
-The extension implements PHPStan's `DynamicMethodReturnTypeExtension` interface to intercept calls to `ContainerInterface::get()`. When it detects a class-string argument, it returns an `ObjectType` for that class, giving PHPStan full knowledge of the returned object's type.
-
 ## License
 
 MIT
+
+## Credits
+
+This package is inspired by [Phil Nelson](https://github.com/phil-nelson)'s [phpstan-container-extension](https://packagist.org/packages/phil-nelson/phpstan-container-extension).
