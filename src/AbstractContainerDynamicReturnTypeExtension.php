@@ -47,7 +47,7 @@ abstract class AbstractContainerDynamicReturnTypeExtension implements DynamicMet
 	 * @param MethodCall       $methodCall       The method call node.
 	 * @param Scope            $scope            The analysis scope.
 	 *
-	 * @return Type|null
+	 * @return Type
 	 */
 	public function getTypeFromMethodCall(
         MethodReflection $methodReflection,
@@ -68,6 +68,15 @@ abstract class AbstractContainerDynamicReturnTypeExtension implements DynamicMet
             return ParametersAcceptorSelector::selectFromArgs($scope, $methodCall->getArgs(), $methodReflection->getVariants())->getReturnType();
         }
 
-        return new ObjectType($argType->getValue());
+		if (!method_exists($argType, 'getValue')) {
+			return ParametersAcceptorSelector::selectFromArgs($scope, $methodCall->getArgs(), $methodReflection->getVariants())->getReturnType();
+		}
+
+		$value = $argType->getValue();
+		if (!is_string($value)) {
+			return ParametersAcceptorSelector::selectFromArgs($scope, $methodCall->getArgs(), $methodReflection->getVariants())->getReturnType();
+		}
+
+        return new ObjectType($value);
     }
 }
