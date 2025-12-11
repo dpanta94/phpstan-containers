@@ -12,7 +12,7 @@ namespace DPanta\PHPStan\Containers;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\ReflectionProvider;
+use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
@@ -24,12 +24,6 @@ use PHPStan\Type\Type;
  * Subclasses only need to implement getClass() to specify which container interface they support.
  */
 abstract class AbstractContainerDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension {
-
-	private ReflectionProvider $reflectionProvider;
-
-	public function __construct( ReflectionProvider $reflectionProvider ) {
-		$this->reflectionProvider = $reflectionProvider;
-	}
 
 	/**
 	 * Check if this extension handles the given method.
@@ -56,25 +50,24 @@ abstract class AbstractContainerDynamicReturnTypeExtension implements DynamicMet
 	 * @return Type|null
 	 */
 	public function getTypeFromMethodCall(
-		MethodReflection $methodReflection,
-		MethodCall $methodCall,
-		Scope $scope
-	): ?Type {
-		if ( count( $methodCall->getArgs() ) === 0 ) {
-			return null;
-		}
+        MethodReflection $methodReflection,
+        MethodCall $methodCall,
+        Scope $scope
+    ): Type {
+        $args = $methodCall->getArgs();
+        if (count($args) !== 1) {
+            return ParametersAcceptorSelector::selectFromArgs($scope, $methodCall->getArgs(), $methodReflection->getVariants())->getReturnType();
+        }
 
-		$arg  = $methodCall->getArgs()[0]->value;
-		$type = $scope->getType( $arg );
+        $argType = $scope->getType($args[0]->value);
+        if (count($argType->getConstantStrings()) === 0) {
+            return ParametersAcceptorSelector::selectFromArgs($scope, $methodCall->getArgs(), $methodReflection->getVariants())->getReturnType();
+        }
 
-		$classNames = $type->getConstantStrings();
-		if ( count( $classNames ) === 1 ) {
-			$className = $classNames[0]->getValue();
-			if ( $this->reflectionProvider->hasClass( $className ) ) {
-				return new ObjectType( $className );
-			}
-		}
+        if ($argType->isClassString()->no()) {
+            return ParametersAcceptorSelector::selectFromArgs($scope, $methodCall->getArgs(), $methodReflection->getVariants())->getReturnType();
+        }
 
-		return null;
-	}
+        return new ObjectType($argType->getValue());
+    }
 }
