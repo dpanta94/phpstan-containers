@@ -60,6 +60,24 @@ The extension resolves types when:
 
 When using string service IDs (e.g., `$container->get('mailer')`), the extension falls back to the default `mixed` return type.
 
+## Prefixed containers (Strauss / Mozart)
+
+PHPStan keys dynamic return type extensions by the class returned from `getClass()` and only consults them when the value's type has that class in its ancestry. If you ship your dependencies through a namespace prefixer such as [Strauss](https://github.com/BrianHenryIE/strauss) or Mozart, your container interface is rewritten (e.g. `StellarWP\ContainerContract\ContainerInterface` becomes `Acme\Vendor\StellarWP\ContainerContract\ContainerInterface`). The bundled StellarWP and PSR extensions can no longer match it, because the prefixed copy shares no ancestor with the original interface.
+
+Register `ConfigurableContainerDynamicReturnTypeExtension` once per prefixed container interface in your `phpstan.neon`:
+
+```neon
+services:
+    -
+        class: DPanta\PHPStan\Containers\ConfigurableContainerDynamicReturnTypeExtension
+        arguments:
+            containerClass: Acme\Vendor\StellarWP\ContainerContract\ContainerInterface
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
+```
+
+The bundled defaults remain registered, so unprefixed containers keep working with zero configuration.
+
 ## License
 
 MIT

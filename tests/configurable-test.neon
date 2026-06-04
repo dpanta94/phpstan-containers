@@ -1,0 +1,14 @@
+includes:
+    - ../extension.neon
+
+parameters:
+    scanDirectories:
+        - %currentWorkingDirectory%/tests/data/
+
+services:
+    -
+        class: DPanta\PHPStan\Containers\ConfigurableContainerDynamicReturnTypeExtension
+        arguments:
+            containerClass: DPanta\PHPStan\Containers\Tests\Data\PrefixedContainerInterface
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
