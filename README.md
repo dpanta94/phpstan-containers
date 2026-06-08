@@ -8,6 +8,7 @@ PHPStan extensions for dependency injection containers. Provides dynamic return 
 
 - [StellarWP Container Contract](https://github.com/stellarwp/container-contract) (`StellarWP\ContainerContract\ContainerInterface`)
 - [PSR-11 Container](https://www.php-fig.org/psr/psr-11/) (`Psr\Container\ContainerInterface`)
+- Any container really as long as you pass its fully qualified class name to the extension as an argument.
 
 ## Requirements
 

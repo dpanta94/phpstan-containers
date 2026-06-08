@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. This project adhere to the [Semantic Versioning](http://semver.org/) standard.
 
-## [Unreleased]
+## [0.2.0] 2026-06-09
 
 * Feature - Add `ConfigurableContainerDynamicReturnTypeExtension` so namespace-prefixed (Strauss/Mozart) container interfaces can be matched by registering the target class through configuration.
 
