@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. This project adhere to the [Semantic Versioning](http://semver.org/) standard.
 
+## [Unreleased]
+
+* Feature - Add `ConfigurableContainerDynamicReturnTypeExtension` so namespace-prefixed (Strauss/Mozart) container interfaces can be matched by registering the target class through configuration.
+
 ## [0.1.0] 2025-12-11
 
 * Feature - Initial release of PHPStan Container Extensions.
